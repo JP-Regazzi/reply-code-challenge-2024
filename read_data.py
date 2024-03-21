@@ -1,9 +1,46 @@
+tile_movements = {
+    "3": ["left-right"],
+    "5": ["down-right"],
+    "6": ["left-down"],
+    "7": ["left-right", "left-down", "down-right"],
+    "9": ["up-right"],
+    "96": ["left-down", "up-right"],
+    "A": ["left-up"],
+    "A5": ["left-up", "down-right"],
+    "B": ["left-right", "left-up", "up-right"],
+    "C": ["up-down"],
+    "C3": ["left-right", "up-down"],
+    "D": ["up-down", "up-right", "down-right"],
+    "E": ["left-up", "left-down", "up-down"],
+    "F": ["left-right", "left-down", "left-up", "up-down", "down-right", "up-right"]
+}
+
+def generate_movements(tile_id):
+    movements = []
+    if tile_id in tile_movements:
+        movements = tile_movements[tile_id]
+    
+    generated_coords = set()
+    for movement in movements:
+        for direction in movement.split('-'):
+            if direction == "left":
+                generated_coords.add((-1, 0))
+            elif direction == "right":
+                generated_coords.add((1, 0))
+            elif direction == "up":
+                generated_coords.add((0, -1))
+            elif direction == "down":
+                generated_coords.add((0, 1))
+    
+    return generated_coords
+
+
 class GoldenPoint:
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
-class SilverPoint:
+class SilverPoint:  
     def __init__(self, x, y, score):
         self.x = x
         self.y = y
@@ -36,18 +73,8 @@ def read_input(filename):
             if not line.strip():
                 break
             tid, cost, quantity = line.split()
-            movements = th[tid]
+            movements = tile_movements[tid]
             
-            #while True:
-            #    line = file.readline().strip()
-            #    if not line:
-            #        break
-            #    if line.startswith('•'):
-            #        movement = line[2:].strip()
-            #        movements.append(movement)
-            #    else:
-            #        break
-
             tiles.append(Tile(tid, int(cost), int(quantity), movements))
 
     return W, H, golden_points, silver_points, tiles
