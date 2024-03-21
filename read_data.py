@@ -10,14 +10,14 @@ class SilverPoint:
         self.score = score
 
 class Tile:
-    def __init__(self, tid, cost, quantity):
+    def __init__(self, tid, cost, quantity, movements):
         self.tid = tid
         self.cost = cost
         self.quantity = quantity
+        self.movements = movements
 
-# Read input from file
 def read_input(filename):
-    with open(filename, 'r') as file:
+    with open(filename, 'r', encoding='utf-8-sig') as file:  # specifying 'utf-8-sig' for encoding
         W, H, GN, SM, TL = map(int, file.readline().split())
 
         golden_points = []
@@ -31,14 +31,30 @@ def read_input(filename):
             silver_points.append(SilverPoint(sx, sy, score))
 
         tiles = []
-        for _ in range(TL):
-            tid, cost, quantity = file.readline().split()
-            tiles.append(Tile(tid, int(cost), int(quantity)))
+        while True:
+            line = file.readline()
+            if not line.strip():
+                break
+            tid, cost, quantity = line.split()
+            movements = th[tid]
+            
+            #while True:
+            #    line = file.readline().strip()
+            #    if not line:
+            #        break
+            #    if line.startswith('•'):
+            #        movement = line[2:].strip()
+            #        movements.append(movement)
+            #    else:
+            #        break
+
+            tiles.append(Tile(tid, int(cost), int(quantity), movements))
 
     return W, H, golden_points, silver_points, tiles
 
+
 # Example usage
-filename = 'input.txt'  # Change this to your input file
+filename = './data/00-trailer.txt'  # Change this to your input file
 W, H, golden_points, silver_points, tiles = read_input(filename)
 
 # Example printing
@@ -52,4 +68,4 @@ for point in silver_points:
     print("  x:", point.x, "y:", point.y, "score:", point.score)
 print("Tiles:")
 for tile in tiles:
-    print("  TID:", tile.tid, "cost:", tile.cost, "quantity:", tile.quantity)
+    print("  TID:", tile.tid, "cost:", tile.cost, "quantity:", tile.quantity, tile.movements)
