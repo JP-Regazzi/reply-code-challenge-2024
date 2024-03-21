@@ -38,12 +38,16 @@ for tile in tiles:
                     if str(distance) in movement:
                         G.add_edge(gp1, gp2, weight=tile.cost)
 
+
 # Assuming the first golden point as the source
-source = golden_points[0]
+source = (0, 0)
+visited_golden_points = set()
 
-# Finding shortest paths from the source to all other golden points
-shortest_distances = bellman_ford(G, source)
-
-# Printing shortest distances
-for point, distance in shortest_distances.items():
-    print("Distance from", (source.x, source.y), "to", (point.x, point.y), ":", distance)
+# Go through all golden points
+while len(visited_golden_points) < len(golden_points):
+    shortest_paths = bellman_ford(G, source)
+    closest_golden_point = min(golden_points, key=lambda gp: shortest_paths[(gp.x, gp.y)])
+    visited_golden_points.add(closest_golden_point)
+    print(f"Visited golden point at ({closest_golden_point.x}, {closest_golden_point.y}")
+    print(f"Distance from {(source.x, source.y)} to {(closest_golden_point.x, closest_golden_point.y)} : {distance}")
+    source = (closest_golden_point.x, closest_golden_point.y)
