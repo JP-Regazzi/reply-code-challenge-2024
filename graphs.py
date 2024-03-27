@@ -59,30 +59,34 @@ def create_nx_graph_with_tile_weight(grid_width, grid_height, tiles, movements):
 
     return G
 
-# Create the graph with detailed tile cost as weights
-G_tile_weight = create_nx_graph_with_tile_weight(grid_width, grid_height, tiles, tile_movements)
 
-# Print the edges from the node (0, 0) to demonstrate the new weight format with costs
-print("Edges and detailed weights (costs) from node (0, 0):")
-for edge in G_tile_weight.edges((0, 0), data=True):
-    print(edge)
 
-# Use the detailed graph creation function
-G_detailed = create_nx_graph_with_tile_weight(grid_width, grid_height, tiles, tile_movements)
+if __name__ == "__main__":
 
-# Display basic information about the detailed graph
-print(f"Number of nodes: {G_detailed.number_of_nodes()}")
-print(f"Number of edges: {G_detailed.number_of_edges()}")
+    # Create the graph with detailed tile cost as weights
+    G_tile_weight = create_nx_graph_with_tile_weight(grid_width, grid_height, tiles, tile_movements)
 
-# Example: print edges from the node (0, 0) to demonstrate actual weights
-print("Edges and actual weights from node (0, 0):")
-for edge in G_detailed.edges((0, 0), data=True):
-    print(edge)
+    # Print the edges from the node (0, 0) to demonstrate the new weight format with costs
+    print("Edges and detailed weights (costs) from node (0, 0):")
+    for edge in G_tile_weight.edges((0, 0), data=True):
+        print(edge)
 
-# Position nodes using a grid layout for visualization
-pos = {(x, y): (x, -y) for y in range(grid_height) for x in range(grid_width)}
+    # Use the detailed graph creation function
+    G_detailed = create_nx_graph_with_tile_weight(grid_width, grid_height, tiles, tile_movements)
 
-plt.figure(figsize=(12, 8))
-nx.draw(G_detailed, pos, with_labels=True, node_size=700, node_color="lightblue", font_size=10)
-plt.title("Graph Representation of the Grid")
-plt.show()
+    # Display basic information about the detailed graph
+    print(f"Number of nodes: {G_detailed.number_of_nodes()}")
+    print(f"Number of edges: {G_detailed.number_of_edges()}")
+
+    # Example: print edges from the node (0, 0) to demonstrate actual weights
+    print("Edges and actual weights from node (0, 0):")
+    for edge in G_detailed.edges((0, 0), data=True):
+        print(edge)
+
+    # Position nodes using a grid layout for visualization
+    pos = {(x, y): (x, -y) for y in range(grid_height) for x in range(grid_width)}
+
+    plt.figure(figsize=(12, 8))
+    nx.draw(G_detailed, pos, with_labels=True, node_size=700, node_color="lightblue", font_size=10)
+    plt.title("Graph Representation of the Grid")
+    plt.show()
